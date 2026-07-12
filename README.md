@@ -2,6 +2,7 @@
 
 ## Project Structure
 
+```text
 embedded-challenge/
 │
 ├── qr-service/
@@ -15,8 +16,13 @@ embedded-challenge/
 │   ├── certs/
 │   └── Dockerfile
 │
+├── diagrams/
+│   ├── architecture.mmd
+│   └── sequence.mmd
+│
 ├── docker-compose.yml
 └── README.md
+```
 
 ## How to Run
 
