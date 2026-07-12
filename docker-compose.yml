@@ -1,0 +1,55 @@
+services:
+
+  fake-serial:
+    image: alpine/socat
+    privileged: true
+
+    entrypoint: ["socat"]
+
+    command:
+      - "-d"
+      - "-d"
+      - "pty,raw,echo=0,link=/tmp/ttyS1"
+      - "pty,raw,echo=0,link=/tmp/ttyS2"
+
+    volumes:
+      - serial-data:/tmp
+      - /dev/pts:/dev/pts
+
+  qr-service:
+
+    build: ./qr-service
+
+    environment:
+      SERIAL_PORT: /tmp/ttyS1
+      SERIAL_BAUD: 9600
+
+    volumes:
+      - serial-data:/tmp
+      - /dev/pts:/dev/pts
+
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      - fake-serial
+
+  gateway-py:
+
+    build: ./gateway
+
+    environment:
+      QR_HOST: qr-service
+      QR_PORT: 5000
+      MQTT_HOST: test.mosquitto.org
+      MQTT_PORT: 8883
+      MQTT_TOPIC_CMD: from_cloud/command
+      MQTT_TOPIC_EVENT: from_device/events
+      MQTT_CERT: /app/certs/mosquitto.org.crt
+
+    depends_on:
+      - qr-service
+
+volumes:
+
+  serial-data:

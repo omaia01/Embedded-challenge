@@ -1,0 +1,11 @@
+build/
+**/build/
+
+.vscode/
+
+__pycache__/
+*.pyc
+
+*.o
+
+.DS_Store
