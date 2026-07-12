@@ -1,0 +1,19 @@
+flowchart LR
+
+    A[MQTT Explorer]
+
+    B[Gateway.py<br/>Python]
+
+    C[QR Service<br/>C++]
+
+    D[QRReader]
+
+    E[Fake Serial Device<br/>socat PTYs]
+
+    A <-->|MQTT TLS| B
+
+    B <-->|TCP Socket| C
+
+    C --> D
+
+    D <-->|Serial Port| E
